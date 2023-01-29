@@ -1,0 +1,90 @@
+#import the right libraries and logos
+from art import logo
+from art import vs
+from game_data import data
+from replit import clear
+import random
+
+#create a function that returns two people 
+def rand_person():
+  """ creates random person"""
+  rand_person=random.choice(data)
+  return rand_person
+
+#create function to get details of person with most followers
+def keep_highest_person_details(person1, person2):
+  match=[]
+  match.extend([person1,person2])
+  highest_follower_count = 0
+  highest_person={}
+
+  for person in match:
+    if person['follower_count']>highest_follower_count:
+      highest_follower_count=person['follower_count']
+      highest_person=person
+  return highest_person
+
+#function to evaluate if user has it right
+def check_guess(choice, person2, highest_person, points):
+  if choice== "higher":
+    if person2['follower_count'] == highest_person['follower_count']:
+      return points + 1
+    else:
+      return 'you lose'
+  else:
+    if person2['follower_count'] < highest_person['follower_count']:
+      return points + 1
+    else:
+      return 'you lose'
+
+#library with old guesses, we do not want to compare the same old user_names
+def library_with_old_guesses(person1):
+  old_names=[]
+  old_names.extend([person1])
+  return old_names
+
+def play_game():
+  print(logo)
+  points=0
+  used=[]
+  person2= rand_person()
+
+  #randomly get two players and keep highest person
+
+  
+
+
+# ask player to start a game yes/no
+  play=input(f'do you want to play "higher or lower"? type "yes" or "no"\n')
+  
+  while play == "yes":
+
+    person1=person2
+    person2= rand_person()
+  
+    #calculate who has highest follower count (for calculations)
+    highest_person=keep_highest_person_details(person1,person2)
+  
+    #if user is already used, get a new random person
+    for i in used:
+      if i["name"] == person1["name"]:
+        person1= rand_person()
+        
+ 
+    #give the two options and let user choose highest follower count
+    print(f'{person1["name"]} [A] has {person1["follower_count"]} followers')
+    choice=input(f'{person2["name"]} [B] has higher or lower amount of followers than A?\n')
+    if check_guess(choice, person2, highest_person, points)== 'you lose':
+      print(f'you lost. you ended up with {points} points')
+      break
+    else:
+      points=check_guess(choice, person2, highest_person, points)
+      print(f'you got {points} points')
+  
+      #library with old guesses
+      used=library_with_old_guesses(person1)
+  
+  # clear()
+  play_game()
+
+play_game()
