@@ -8,7 +8,6 @@ import random
 #create a function that returns two people 
 def rand_person():
   """ creates random person"""
-  
   rand_person=random.choice(data)
   return rand_person
 
@@ -48,40 +47,44 @@ def play_game():
   print(logo)
   points=0
   used=[]
+  person2= rand_person()
 
-  # ask player to start a game yes/no
+  #randomly get two players and keep highest person
+
+  
+
+
+# ask player to start a game yes/no
   play=input(f'do you want to play "higher or lower"? type "yes" or "no"\n')
-
+  
   while play == "yes":
 
-    #randomly get two players and keep highest person
-    person1= rand_person()
-    person2=rand_person()
-    print(person1)
-    print(person2)
+    person1=person2
+    person2= rand_person()
   
     #calculate who has highest follower count (for calculations)
     highest_person=keep_highest_person_details(person1,person2)
-
+  
     #if user is already used, get a new random person
     for i in used:
       if i["name"] == person1["name"]:
         person1= rand_person()
         
-  
+ 
     #give the two options and let user choose highest follower count
-    print(f'{person1["name"]} has {person1["follower_count"]} followers')
-    choice=input(f'{person2["name"]} has higher or lower amount of followers?\n')
+    print(f'{person1["name"]} [A] has {person1["follower_count"]} followers')
+    choice=input(f'{person2["name"]} [B] has higher or lower amount of followers than A?\n')
     if check_guess(choice, person2, highest_person, points)== 'you lose':
       print(f'you lost. you ended up with {points} points')
       break
     else:
       points=check_guess(choice, person2, highest_person, points)
       print(f'you got {points} points')
-
+  
       #library with old guesses
       used=library_with_old_guesses(person1)
-
-  play_game()
   
+  # clear()
+  play_game()
+
 play_game()
